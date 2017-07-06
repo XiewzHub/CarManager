@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<!-- 指定由spring负责action对象的创建 -->
+	<constant name="struts.objectFactory"
+		value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<!-- 是否启用开发模式 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- struts配置文件改动后，是否重新加载 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 设置浏览器是否缓存静态内容 -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+	<!-- 请求参数的编码方式 -->
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<!-- 每次HTTP请求系统都重新加载资源文件，有助于开发 -->
+	<constant name="struts.i18n.reload" value="true" />
+	<!-- 文件上传最大值 -->
+	<constant name="struts.multipart.maxSize" value="104857600" />
+	<!-- 让struts2支持动态方法调用 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 允许标签中使用表达式语法 -->
+	<constant name="struts.tag.altSyntax" value="true" />
+	<!-- 基础模块 -->
+	<package name="basePackage" extends="struts-default" namespace="/">
+
+		<default-action-ref name="index"></default-action-ref>
+		<action name="index">
+			<result>/error.jsp</result>
+		</action>
+
+		<action name="login" class="userAction" method="login">
+			<!-- （1）redirect:重定向jsp（2）redirectAction:重定向action（3）dispatcher:请求转发，默认值 -->
+			<result name="success">/main.jsp
+			</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="resetPassword" class="userAction" method="resetPassword">
+			<result name="success" >/login.jsp</result>
+			<result name="input">/resetPassword.jsp</result>
+		</action>
+		<action name="forgetPassword" class="userAction" method="forgetPassword">
+			<result name="success" >/login.jsp</result>
+			<result name="input">/forgetPassword.jsp</result>
+		</action>
+
+	</package>
+	<!-- 车辆信息，驾驶员信息 -->
+	<package name="Info" extends="struts-default" namespace="/">
+	<!-- carInfo -->
+		<!-- list -->
+		<action name="carInfoList" class="carInfoAction" method="carInfoList">
+			<result name="success" >/carInfo.jsp</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		
+		<!-- add -->
+		<action name="carInfoAdd" class="carInfoAction" method="add">
+			<result name="success" type="redirectAction">/carInfoList</result>
+			<result name="input">/carInfoAdd.jsp</result>
+		</action>
+		<!-- delete -->
+		<action name="carInfoDelete" class="carInfoAction" method="delete">
+			<result name="success" type="redirectAction">/carInfoList</result>
+			<result name="input">/carInfo.jsp</result>
+		</action>
+		<!-- update -->
+		<action name="carInfoUpdate" class="carInfoAction" method="update">
+			<result name="success" type="redirectAction">/carInfoList</result>
+			<result name="input">/carInfoUpdate.jsp</result>
+		</action>
+		<!-- driverInfo -->
+		<!-- list -->
+	 	<action name="driverInfoList" class="driverInfoAction" method="driverInfoList">
+			<result name="success" >/driverInfo.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		
+		<!-- DriverApplylist -->
+	 	<action name="driverAppplyList" class="driverInfoAction" method="driverAppplyList">
+			<result name="success" >/carApplyDetails.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<!-- add -->
+		<action name="driverInfoAdd" class="driverInfoAction" method="add">
+			<result name="success" type="redirectAction">/driverInfoList</result>
+			<result name="input">/driverInfoAdd.jsp</result>
+		</action>
+		<!-- delete -->
+		<action name="driverInfoDelete" class="driverInfoAction" method="delete">
+			<result name="success" type="redirectAction">/driverInfoList</result>
+			<result name="input">/driverInfo.jsp</result>
+		</action>
+		<!-- update -->
+		<action name="driverInfoUpdate" class="driverInfoAction" method="update">
+			<result name="success" type="redirectAction">/driverInfoList</result>
+			<result name="input">/driverInfoUpdate.jsp</result>
+		</action> 
+	</package>
+	
+	
+	<!-- 车辆申请审批 -->
+	<package name="Apply" extends="struts-default" namespace="/">
+	<!-- carApply -->
+		<!-- list -->
+		<!-- Applylist -->
+		<!-- 申请用车列表 -->
+		<action name="carApplyList" class="carApplyAction" method="carApplyList">
+			<result name="success" >/carApply.jsp</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		<!-- 保存申请 -->
+		<action name="carApply2List" class="carApplyAction" method="carApply2List">
+			<result name="success" type="redirectAction">/carApply3List</result>
+			<result name="input">/carApply.jsp</result>
+		</action>
+		<!-- 查看我的申请 -->
+		<action name="carApply3List" class="carApplyAction" method="carApply3List">
+			<result name="success" >/carApply2List.jsp</result>
+			<result name="input">/carApply.jsp</result>
+		</action>
+		<!-- 审核页面-->
+		<action name="carApply4List" class="carApplyAction" method="carApply4List">
+			<result name="success" >/carReview.jsp</result>
+			<result name="input">/carApply.jsp</result>
+		</action>
+		
+		<!-- 审核通过 -->
+		<action name="carApplyReviewPass" class="carApplyAction" method="carApplyReviewPass">
+			<result name="success" type="redirectAction">/carApply4List</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		<!-- 审核不通过-->
+		<action name="carApplyReviewOut" class="carApplyAction" method="carApplyReviewOut">
+			<result name="success" type="redirectAction">/carApply4List</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		
+	</package>
+	
+	<!-- 车辆进出记录 -->
+	<package name="Runbackinfo" extends="struts-default" namespace="/">
+	<!-- carApply -->
+		<!-- list -->
+		<!-- 状态为可用的司机与车辆 -->
+		<action name="RunbackInfoCarDriverList" class="runbackinfoAction" method="RunbackInfoCarDriverList">
+			<result name="success" >/carRun.jsp</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		<!-- 保存出车记录 -->
+		<action name="saveRuninfo" class="runbackinfoAction" method="saveRuninfo">
+			<result name="success" type="redirectAction">/carRunBackInfoList</result>
+			<result name="input">/carRun.jsp</result>
+		</action>
+		<!-- 状态为忙碌的司机与车辆 -->
+		<action name="RunbackInfoCarDriverList2" class="runbackinfoAction" method="RunbackInfoCarDriverList2">
+			<result name="success" >/carBack.jsp</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		<!-- 保存出车记录 -->
+		<action name="saveRuninfo2" class="runbackinfoAction" method="saveRuninfo2">
+			<result name="success" type="redirectAction">/carRunBackInfoList</result>
+			<result name="input">/carBack.jsp</result>
+		</action>
+		<!-- 查看进出车记录 -->
+		<action name="carRunBackInfoList" class="runbackinfoAction" method="carRunBackInfoList">
+			<result name="success" >/carRunBackInfoList.jsp</result>
+			<result name="input">/main.jsp</result>
+		</action>
+		<!-- 审核页面-->
+		<action name="carApply4List" class="carApplyAction" method="carApply4List">
+			<result name="success" >/carReview.jsp</result>
+			<result name="input">/carApply.jsp</result>
+		</action>
+
+	</package>
+	
+</struts>

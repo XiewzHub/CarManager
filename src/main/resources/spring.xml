@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+"
+default-lazy-init="true"
+>
+
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+
+	<!-- 自动扫描dao和service包(自动注入) <context:component-scan base-package="com.ggsleeper.dao,com.ggsleeper.service" 
+		/> -->
+	<!-- Dao -->
+		<!-- base -->
+	<bean id="userDao" class="com.ggsleeper.dao.impl.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userRolesDao" class="com.ggsleeper.dao.impl.UserRolesDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="privilegeDao" class="com.ggsleeper.dao.impl.PrivilegeDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="rolePrivilegeDao" class="com.ggsleeper.dao.impl.RolePrivilegeDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="roleDao" class="com.ggsleeper.dao.impl.RoleDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<!-- 车辆信息及驾驶员信息 -->
+	<bean id="carInfoDao" class="com.ggsleeper.dao.impl.CarInfoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="driverInfoDao" class="com.ggsleeper.dao.impl.DriverInfoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 进出车记录 -->
+	<bean id="runbackinfoDao" class="com.ggsleeper.dao.impl.RunbackinfoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		<!-- 车辆申请审核 -->
+		<bean id="carApplyDao" class="com.ggsleeper.dao.impl.CarApplyDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+
+	<!-- Service -->
+		<!-- base -->
+	<bean id="userService" class="com.ggsleeper.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"/>
+	</bean>
+	<bean id="userRolesService" class="com.ggsleeper.service.impl.UserRolesServiceImpl">
+		<property name="userRolesDao" ref="userRolesDao"/>
+	</bean>
+	<bean id="roleService" class="com.ggsleeper.service.impl.RoleServiceImpl">
+		<property name="roleDao" ref="roleDao"/>
+	</bean>
+	<bean id="rolePrivilegeService" class="com.ggsleeper.service.impl.RolePrivilegeServiceImpl">
+		<property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>
+	</bean>
+	<bean id="privilegeService" class="com.ggsleeper.service.impl.PrivilegeServiceImpl">
+		<property name="privilegeDao" ref="privilegeDao"/>
+	</bean>
+		<!-- 车辆信息 -->
+	<bean id="carInfoService" class="com.ggsleeper.service.impl.CarInfoServiceImpl">
+		<property name="carInfoDao" ref="carInfoDao"/>
+	</bean>
+	<bean id="driverInfoService" class="com.ggsleeper.service.impl.DriverInfoServiceImpl">
+		<property name="driverInfoDao" ref="driverInfoDao"/>
+	</bean>
+	<!-- 进出车记录 -->
+		<bean id="runbackinfoService" class="com.ggsleeper.service.impl.RunbackinfoServiceImpl">
+		<property name="runbackinfoDao" ref="runbackinfoDao"/>
+	</bean>
+	
+		<!-- 车辆审核 -->
+		<bean id="carApplyService" class="com.ggsleeper.service.impl.CarApplyServiceImpl">
+		<property name="carApplyDao" ref="carApplyDao"/>
+	</bean>
+	
+	<!-- Action -->
+	<bean id="userAction" class="com.ggsleeper.action.UserAction" scope="prototype">
+		<property name="userService" ref="userService" />
+		<property name="userRolesService" ref="userRolesService" />
+		<property name="roleService" ref="roleService" />
+		<property name="rolePrivilegeService" ref="rolePrivilegeService" />
+		<property name="privilegeService" ref="privilegeService" />
+		<property name="carApplyService" ref="carApplyService" />
+		<property name="driverInfoService" ref="driverInfoService" />
+	</bean>
+	
+	<bean id="carInfoAction" class="com.ggsleeper.action.CarInfoAction" scope="prototype">
+			<property name="carInfoService" ref="carInfoService" />
+	</bean>
+	
+	<bean id="driverInfoAction" class="com.ggsleeper.action.DriverInfoAction" scope="prototype">
+			<property name="driverInfoService" ref="driverInfoService" />
+	</bean>
+	
+	<bean id="carApplyAction" class="com.ggsleeper.action.CarApplyAction" scope="prototype">
+			<property name="userService" ref="userService" />
+			<property name="carApplyService" ref="carApplyService" />
+			<property name="carInfoService" ref="carInfoService" />
+			<property name="driverInfoService" ref="driverInfoService" />
+	</bean>
+	
+	<bean id="runbackinfoAction" class="com.ggsleeper.action.RunbackinfoAction" scope="prototype">
+			<property name="runbackinfoService" ref="runbackinfoService" />
+			<property name="carInfoService" ref="carInfoService" />
+			<property name="driverInfoService" ref="driverInfoService" />
+	</bean>
+
+
+</beans>
